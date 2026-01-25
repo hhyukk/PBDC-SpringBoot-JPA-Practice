@@ -2,6 +2,7 @@ package com.back.global;
 
 import com.back.domain.member.member.entity.Member;
 import com.back.domain.member.member.service.MemberService;
+import com.back.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
@@ -15,15 +16,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class BaseinitData {
     private final BaseinitData self;
     private final MemberService memberService;
+    private final PostService postService;
 
-    public BaseinitData(@Lazy BaseinitData self, MemberService memberService) {
+    public BaseinitData(@Lazy BaseinitData self, MemberService memberService, PostService postService) {
         this.self=self;
         this.memberService=memberService;
+        this.postService=postService;
     }
     @Bean
     public ApplicationRunner baseInitDataRunner(){
         return args->{
             self.work1();
+            self.work2();
         };
     }
 
@@ -37,5 +41,10 @@ public class BaseinitData {
         Member user1Member = memberService.join("user1", "1234", "유저1");
         Member user2Member = memberService.join("user2", "1234", "유저2");
         Member user3Member = memberService.join("user3", "1234", "유저3");
+    }
+
+    @Transactional
+    public void work2(){
+        log.debug("글 수 : {}", postService.count());
     }
 }
