@@ -46,5 +46,6 @@ public class BaseinitData {
     @Transactional
     public void work2(){
         log.debug("글 수 : {}", postService.count());
+        Member userMember=memberService.findByUsername("user1").get();
     }
 }
