@@ -1,0 +1,21 @@
+package com.back.domain.post.post.entity;
+
+import com.back.domain.member.member.entity.Member;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+
+import static jakarta.persistence.FetchType.LAZY;
+
+public class Post {
+    @ManyToOne(fetch = LAZY)
+    private Member author;
+    private String title;
+    @Column(columnDefinition = "LONGTEXT")
+    private String content;
+
+    public Post(Member author, String title, String content) {
+        this.author=author;
+        this.title=title;
+        this.content=content;
+    }
+}

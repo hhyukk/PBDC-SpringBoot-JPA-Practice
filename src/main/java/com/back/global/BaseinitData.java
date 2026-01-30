@@ -2,6 +2,7 @@ package com.back.global;
 
 import com.back.domain.member.member.entity.Member;
 import com.back.domain.member.member.service.MemberService;
+import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,20 +20,21 @@ public class BaseinitData {
     private final PostService postService;
 
     public BaseinitData(@Lazy BaseinitData self, MemberService memberService, PostService postService) {
-        this.self=self;
-        this.memberService=memberService;
-        this.postService=postService;
+        this.self = self;
+        this.memberService = memberService;
+        this.postService = postService;
     }
+
     @Bean
-    public ApplicationRunner baseInitDataRunner(){
-        return args->{
+    public ApplicationRunner baseInitDataRunner() {
+        return args -> {
             self.work1();
             self.work2();
         };
     }
 
     @Transactional
-    public void work1(){
+    public void work1() {
         if (memberService.count() > 0) return;
 
         Member systemMember = memberService.join("system", "1234", "시스템");
@@ -44,8 +46,13 @@ public class BaseinitData {
     }
 
     @Transactional
-    public void work2(){
-        log.debug("글 수 : {}", postService.count());
-        Member userMember=memberService.findByUsername("user1").get();
+    public void work2() {
+
+        if (postService.count() > 0) return;
+        Member userMember = memberService.findByUsername("user1").get();
+        Member user2Member = memberService.findByUsername("user2").get();
+        Member user3Member = memberService.findByUsername("user3").get();
+
+        Post post1 = postService.write(userMember, "제목1", "내용1");
     }
 }
