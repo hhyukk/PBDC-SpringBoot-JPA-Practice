@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class PostChainService {
@@ -21,4 +23,9 @@ public class PostChainService {
 
         return postChainRepository.save(postChain);
     }
+
+    public Optional<PostChain> findById(int id) {
+        return postChainRepository.findById(id);
+    }
+
 }
